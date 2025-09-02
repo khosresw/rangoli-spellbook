@@ -1,0 +1,252 @@
+<!DOCTYPE html>
+<html>
+
+<html>
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>rangoli6</title>
+
+  <style>
+    /* Global body styling */
+body {
+  background: #fdf6e3;
+  font-family: 'Georgia', serif;
+  padding: 40px;
+  margin: 0;
+}
+
+/* Title and subtitle */
+.title {
+  text-align: center;
+  font-size: 28px;
+  color: #4e342e;
+  margin-bottom: 10px;
+}
+
+.subtitle {
+  text-align: center;
+  font-size: 16px;
+  color: #6d4c41;
+  margin-bottom: 30px;
+  font-style: italic;
+}
+
+/* Ritual grid */
+.stencil-grid {
+  display: grid;
+  grid-template-columns: repeat(5, 80px);
+  grid-template-rows: repeat(5, 80px);
+  gap: 10px;
+  justify-content: center;
+  margin-bottom: 40px;
+}
+
+.cell {
+  background: white;
+  border: 1px solid #ccc;
+  position: relative;
+  cursor: pointer;
+  transition: transform 0.2s ease;
+}
+
+.cell:hover {
+  transform: scale(1.05);
+  border-color: #444;
+}
+
+/* Export button */
+.export-button {
+  display: block;
+  margin: 0 auto 30px;
+  padding: 10px 20px;
+  font-size: 14px;
+  background: #6d4c41;
+  color: white;
+  border: none;
+  border-radius: 6px;
+  cursor: pointer;
+  box-shadow: 0 2px 6px rgba(0,0,0,0.2);
+}
+
+.export-button:hover {
+  background: #4e342e;
+}
+
+/* Lore log scroll */
+.spellbook-page {
+  border: 4px dashed #6d4c41;
+  padding: 30px;
+  max-width: 800px;
+  margin: auto;
+  background: #fff8e1;
+  box-shadow: 0 0 10px rgba(0,0,0,0.1);
+}
+
+/* Individual lore entries */
+.log-entry {
+  border-bottom: 1px dashed #a1887f;
+  padding: 10px 0;
+}
+
+.cell-id, .motif-name, .lore-text, .timestamp {
+  margin: 4px 0;
+  font-size: 14px;
+}
+
+.lore-text {
+  font-style: italic;
+  color: #bf360c;
+}
+
+/* Stitched tooltip styling */
+.stitched-tooltip {
+  position: absolute;
+  background: #fff8e1;
+  border: 2px dashed #6d4c41;
+  padding: 8px 12px;
+  font-size: 12px;
+  font-style: italic;
+  color: #4e342e;
+  box-shadow: 0 2px 6px rgba(0,0,0,0.2);
+  pointer-events: none;
+  opacity: 0;
+  transition: opacity 0.3s ease;
+  z-index: 10;
+  border-radius: 6px;
+}
+  </style>
+
+  
+</head>
+<body>
+  <!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Rangoli Ritual Log</title>
+  <link rel="stylesheet" href="styles.css" />
+</head>
+<body>
+  <h1 class="title">🪄 Rangoli Ritual Log</h1>
+  <p class="subtitle">Swati’s Grid of Motifs & Lore</p>
+
+  <!-- Ritual Grid -->
+  <div id="stencil-grid" class="stencil-grid"></div>
+
+  <!-- Export Button -->
+  <button onclick="exportLoreLog()" class="export-button">Export Lore Log</button>
+
+  <!-- Lore Scroll Section -->
+  <div id="lore-output" class="spellbook-page"></div>
+
+  <script src="script.js"></script>
+</body>
+</html>
+
+  <script>
+    const grid = document.getElementById("stencil-grid");
+const loreOutput = document.getElementById("lore-output");
+const gridSize = 5;
+const loreLog = [];
+
+// Motif shapes
+const motifs = {
+  sun: `<circle cx="50" cy="50" r="20" fill="#ff9800" stroke="#e65100" stroke-width="2"/>`,
+  diamond: `<polygon points="50,30 70,50 50,70 30,50" fill="#1976d2"/>`,
+  triangle: `<polygon points="50,30 70,70 30,70" fill="#f57c00"/>`
+};
+
+// Lore captions
+const loreArchive = {
+  sun: "The sun awakens the sacred grid",
+  diamond: "The diamond guards the eastern gate",
+  triangle: "The triangle channels ancestral fire"
+};
+
+// Create grid cells
+for (let i = 0; i < gridSize * gridSize; i++) {
+  const cell = document.createElement("div");
+  cell.classList.add("cell");
+  cell.style.position = "relative";
+  cell.dataset.index = i + 1;
+
+  const motifKeys = Object.keys(motifs);
+  const selectedMotif = motifKeys[i % motifKeys.length];
+
+  cell.addEventListener("click", () => {
+    activateCell(cell, selectedMotif);
+  });
+
+  grid.appendChild(cell);
+}
+
+// Activate cell with motif + stitched tooltip
+function activateCell(cell, motifKey) {
+  if (cell.querySelector("svg")) return;
+
+  // Create SVG motif
+  const svg = document.createElementNS("http://www.w3.org/2000/svg", "svg");
+  svg.setAttribute("width", "60");
+  svg.setAttribute("height", "60");
+  svg.setAttribute("viewBox", "0 0 100 100");
+  svg.style.position = "absolute";
+  svg.style.top = "50%";
+  svg.style.left = "50%";
+  svg.style.transform = "translate(-50%, -50%)";
+  svg.style.cursor = "help";
+  svg.innerHTML = motifs[motifKey];
+  cell.appendChild(svg);
+
+  // Create stitched tooltip
+  const tooltip = document.createElement("div");
+  tooltip.classList.add("stitched-tooltip");
+  tooltip.textContent = loreArchive[motifKey];
+  document.body.appendChild(tooltip);
+
+  svg.addEventListener("mouseenter", () => {
+    tooltip.style.opacity = "1";
+  });
+
+  svg.addEventListener("mousemove", (e) => {
+    tooltip.style.left = e.pageX + 12 + "px";
+    tooltip.style.top = e.pageY + 12 + "px";
+  });
+
+  svg.addEventListener("mouseleave", () => {
+    tooltip.style.opacity = "0";
+  });
+
+  // Log lore entry
+  loreLog.push({
+    cell: cell.dataset.index,
+    motif: motifKey,
+    lore: loreArchive[motifKey],
+    timestamp: new Date().toLocaleString()
+  });
+}
+
+// Export lore log to spellbook page
+function exportLoreLog() {
+  loreOutput.innerHTML = "";
+
+  loreLog.forEach(entry => {
+    const logEntry = document.createElement("div");
+    logEntry.classList.add("log-entry");
+
+    logEntry.innerHTML = `
+      <div class="cell-id">Cell ${entry.cell}</div>
+      <div class="motif-name">Motif: ${entry.motif}</div>
+      <div class="lore-text">“${entry.lore}”</div>
+      <div class="timestamp">Activated on: ${entry.timestamp}</div>
+    `;
+
+    loreOutput.appendChild(logEntry);
+  });
+
+  window.scrollTo({ top: loreOutput.offsetTop, behavior: "smooth" });
+}
+  </script>
+</body>
+</html>

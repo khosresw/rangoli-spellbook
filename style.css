@@ -1,0 +1,107 @@
+/* Global body styling */
+body {
+  background: #fdf6e3;
+  font-family: 'Georgia', serif;
+  padding: 40px;
+  margin: 0;
+}
+
+/* Title and subtitle */
+.title {
+  text-align: center;
+  font-size: 28px;
+  color: #4e342e;
+  margin-bottom: 10px;
+}
+
+.subtitle {
+  text-align: center;
+  font-size: 16px;
+  color: #6d4c41;
+  margin-bottom: 30px;
+  font-style: italic;
+}
+
+/* Ritual grid */
+.stencil-grid {
+  display: grid;
+  grid-template-columns: repeat(5, 80px);
+  grid-template-rows: repeat(5, 80px);
+  gap: 10px;
+  justify-content: center;
+  margin-bottom: 40px;
+}
+
+.cell {
+  background: white;
+  border: 1px solid #ccc;
+  position: relative;
+  cursor: pointer;
+  transition: transform 0.2s ease;
+}
+
+.cell:hover {
+  transform: scale(1.05);
+  border-color: #444;
+}
+
+/* Export button */
+.export-button {
+  display: block;
+  margin: 0 auto 30px;
+  padding: 10px 20px;
+  font-size: 14px;
+  background: #6d4c41;
+  color: white;
+  border: none;
+  border-radius: 6px;
+  cursor: pointer;
+  box-shadow: 0 2px 6px rgba(0,0,0,0.2);
+}
+
+.export-button:hover {
+  background: #4e342e;
+}
+
+/* Lore log scroll */
+.spellbook-page {
+  border: 4px dashed #6d4c41;
+  padding: 30px;
+  max-width: 800px;
+  margin: auto;
+  background: #fff8e1;
+  box-shadow: 0 0 10px rgba(0,0,0,0.1);
+}
+
+/* Individual lore entries */
+.log-entry {
+  border-bottom: 1px dashed #a1887f;
+  padding: 10px 0;
+}
+
+.cell-id, .motif-name, .lore-text, .timestamp {
+  margin: 4px 0;
+  font-size: 14px;
+}
+
+.lore-text {
+  font-style: italic;
+  color: #bf360c;
+}
+
+/* Stitched tooltip styling */
+.stitched-tooltip {
+  position: absolute;
+  background: #fff8e1;
+  border: 2px dashed #6d4c41;
+  padding: 8px 12px;
+  font-size: 12px;
+  font-style: italic;
+  color: #4e342e;
+  box-shadow: 0 2px 6px rgba(0,0,0,0.2);
+  pointer-events: none;
+  opacity: 0;
+  transition: opacity 0.3s ease;
+  z-index: 10;
+  border-radius: 6px;
+}
