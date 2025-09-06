@@ -10,7 +10,7 @@ A living digital codex that celebrates Indian craft traditions, mathematical her
 
 How to Run Locally
 - Clone the repository:
-git clone https://github.com/yourusername/rangoli-spellbook.git
+https://github.com/khosresw/rangoli-spellbook.git
 - Open index.html in your browser
 - Click cells to activate motifs and reveal lore
 - Use the dropdown to switch between regional styles
